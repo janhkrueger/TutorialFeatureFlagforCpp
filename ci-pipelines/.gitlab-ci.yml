@@ -15,7 +15,6 @@ cache:
     - bin/
 
 batch:
-  image: curlimages/curl:latest
   stage: build
   script:
     - mkdir -p bin
