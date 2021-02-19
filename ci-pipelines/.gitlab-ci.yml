@@ -1,13 +1,8 @@
 include:
-- local: '/ci-pipelines/SAST.gitlab-ci.yml'
 - local: '/ci-pipelines/cleanup.gitlab-ci.yml'
-- template: Secret-Detection.gitlab-ci.yml 
-- template: Code-Quality.gitlab-ci.yml
 
 stages:
-- test
 - build
-- upload
 - execute
 - cleanup
 
@@ -22,17 +17,8 @@ cache:
   paths:
     - bin/
 
-sast:
-  variables:
-    SAST_EXCLUDED_PATHS: "bin"
-  stage: test
-  needs: []
-  artifacts:
-    expire_in: 5 min
-
 batch:
   stage: build
-  when: on_success
   script:
     - mkdir -p bin
     - make -f makeGeneric
