@@ -1,0 +1,13 @@
+CC=g++
+CFLAGS=
+CWARNINGS=
+CINCLUDES=-Isrc -I/usr/local/lib/ 
+CLIBS=
+
+SOURCES= src/main.cpp
+OBJECTS=$(SOURCES:.cpp=.o)
+
+all:
+	export GLIBCXX_FORCE_NEW=true
+	$(CC) $(CFLAGS) -O3 $(SOURCES) $(CLIBS) $(CINCLUDES) -o bin/main
+	export GLIBCXX_FORCE_NEW=false
