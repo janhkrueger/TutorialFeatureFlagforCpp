@@ -8,16 +8,19 @@
 #include <iostream>
 
 
-class FeatureFlags
-{
-public:
-    static constexpr bool hello = false; // This would also work with 'const' instead of 'constexpr' actually.
-
+class FeatureFlags {
+  public:
+    static constexpr bool hello = true; // This would also work with 'const' instead of 'constexpr' actually.
 };
 
 
 
 int main() {
-  std::cout << "Hello World" << std::endl;
+  
+  if (FeatureFlags::hello) {
+    std::cout << "Hello World" << std::endl;
+  }
+
+
   return 0;
 }
