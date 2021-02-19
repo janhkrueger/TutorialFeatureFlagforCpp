@@ -3,12 +3,11 @@ include:
 
 stages:
 - build
+- upload
 - cleanup
 
 variables:
   PACKAGENAME: 'mainComponent'
-  VERSIONCOMPONENTTOINCREMENT: '-p'
-  # -M = Major (first position), -m = minor (second position), -p = patch (third position)
 
 batch:
   stage: build
@@ -16,3 +15,14 @@ batch:
     - mkdir -p bin
     - make -f makeGeneric
     - bin/main
+
+upload:
+  image: curlimages/curl:latest
+  stage: upload
+  script:
+    - |
+      VERSION=0.0.1
+      echo "${VERSION}" > version.txt
+      echo "${VERSION}" > version-${VERSION}.txt
+      echo "VERSION=${VERSION}" > version.env
+      curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file bin/main ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGENAME}/${VERSION}/${PACKAGENAME}.${VERSION}
