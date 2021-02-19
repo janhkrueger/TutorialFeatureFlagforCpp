@@ -1,6 +1,10 @@
 include:
 - local: '/ci-pipelines/cleanup.gitlab-ci.yml'
 
+variables:
+  PACKAGENAME: 'main'
+
+
 stages:
 - build
 - upload
@@ -23,4 +27,8 @@ upload:
   stage: upload
   script:
     - |
-      curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file bin/main ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/main/1.0.0.1/main.1.0.0.1
+      VERSION=0.0.1
+      echo "${VERSION}" > version.txt
+      echo "${VERSION}" > version-${VERSION}.txt
+      echo "VERSION=${VERSION}" > version.env
+      curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file bin/main ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGENAME}/${VERSION}/${PACKAGENAME}.${VERSION}
