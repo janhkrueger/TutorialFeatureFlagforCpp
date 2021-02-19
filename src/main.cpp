@@ -7,20 +7,14 @@
 #include <string>
 #include <iostream>
 
-std::string get_env_var( std::string const & key ) {
-  char * val;
-  val = getenv( key.c_str() );
-  std::string retval = "";
-  if (val != NULL) {
-    retval = val;
-  }                                                                                  
-  return retval;                                                                        
-} 
-
+std::string getEnvVar( std::string const & key ) {
+    char * val = getenv( key.c_str() );
+    return val == NULL ? std::string("") : std::string(val);
+}
 
 int main() {
   
-  if (get_env_var() ) {
+  if ( getEnvVar("hello") != "" ) {
     std::cout << "Hello World" << std::endl;
   }
   else {
