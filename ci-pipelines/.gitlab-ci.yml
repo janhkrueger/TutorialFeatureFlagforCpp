@@ -3,23 +3,18 @@ include:
 
 stages:
 - build
-- upload
 - cleanup
 
 variables:
   PACKAGENAME: 'mainComponent'
 
 batch:
+  image: curlimages/curl:latest
   stage: build
   script:
     - mkdir -p bin
     - make -f makeGeneric
     - bin/main
-
-upload:
-  image: curlimages/curl:latest
-  stage: upload
-  script:
     - |
       VERSION=0.0.1
       echo "${VERSION}" > version.txt
