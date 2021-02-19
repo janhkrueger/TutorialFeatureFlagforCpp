@@ -3,7 +3,6 @@ include:
 
 stages:
 - build
-- execute
 - cleanup
 
 variables:
@@ -11,20 +10,9 @@ variables:
   VERSIONCOMPONENTTOINCREMENT: '-p'
   # -M = Major (first position), -m = minor (second position), -p = patch (third position)
 
-
-cache:
-  key: "%CI_PIPELINE_ID%"
-  paths:
-    - bin/
-
 batch:
   stage: build
   script:
     - mkdir -p bin
     - make -f makeGeneric
-
-run:
-  stage: execute
-  when: on_success
-  script:
-    - bin/main
+   - bin/main
