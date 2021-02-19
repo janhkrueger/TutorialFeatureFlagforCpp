@@ -1,0 +1,58 @@
+include:
+- local: '/ci-pipelines/SAST.gitlab-ci.yml'
+- local: '/ci-pipelines/cleanup.gitlab-ci.yml'
+- template: Secret-Detection.gitlab-ci.yml 
+- template: Code-Quality.gitlab-ci.yml
+
+stages:
+- test
+- build
+- upload
+- execute
+- cleanup
+
+variables:
+  PACKAGENAME: 'mainComponent'
+  VERSIONCOMPONENTTOINCREMENT: '-p'
+  # -M = Major (first position), -m = minor (second position), -p = patch (third position)
+
+
+cache:
+  key: "%CI_PIPELINE_ID%"
+  paths:
+    - bin/
+
+sast:
+  variables:
+    SAST_EXCLUDED_PATHS: "bin"
+  stage: test
+  needs: []
+  artifacts:
+    expire_in: 5 min
+
+batch:
+  stage: build
+  when: on_success
+  script:
+    - mkdir -p bin
+    - make -f makeGeneric
+
+run:
+  stage: execute
+  when: on_success
+  script:
+    - bin/main
+
+upload:
+  image: curlimages/curl:latest
+  stage: upload
+  script:
+    - |
+      echo "Version metadata pattern 1: number is expresssed in filename as well so that version metadata is available when file is downloaded."
+      echo "Version metadata pattern 2: version is placed inside a file in the archive."
+      echo "Version metadata pattern 3: structured file name shows version."
+      VERSION=0.0.1
+      echo "${VERSION}" > version.txt
+      echo "${VERSION}" > version-${VERSION}.txt
+      echo "VERSION=${VERSION}" > version.env
+      curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file bin/main ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGENAME}/${VERSION}/${PACKAGENAME}.${VERSION}

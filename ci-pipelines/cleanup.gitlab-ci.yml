@@ -1,0 +1,7 @@
+cleanup:
+  stage: cleanup
+  script:
+    - echo "Cleaning up"
+    - rm -rf bin/
+    - rm -rf "%CACHE_PATH%/%CI_PIPELINE_ID%"
+  when: always
