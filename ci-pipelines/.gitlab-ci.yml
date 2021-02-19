@@ -22,4 +22,5 @@ upload:
   image: curlimages/curl:latest
   stage: upload
   script:
-    - curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file bin/main ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/main/1.0.0.1}/main.1.0.0.1
+    - |
+      curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file bin/main ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/main/1.0.0.1}/main.1.0.0.1
