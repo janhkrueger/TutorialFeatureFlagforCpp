@@ -10,6 +10,7 @@ stages:
 - build
 - upload
 - download
+- run
 - cleanup
 
 cache:
@@ -41,10 +42,11 @@ download_test:
     - |
       apk add wget curl
       wget --header="JOB-TOKEN: $CI_JOB_TOKEN" ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGENAME}/${VERSION}/${PACKAGENAME}.${VERSION}
-    - chmod +x ${PACKAGENAME}.${VERSION}
-    - ls -la
-    - readlink -f ${PACKAGENAME}.${VERSION}
-    # - ${PACKAGENAME}.${VERSION}
-    # - ./${PACKAGENAME}.${VERSION}
-    - exec ${PACKAGENAME}.${VERSION}
-    - /builds/janhkrueger/cpp-tutorial-featureflags/${PACKAGENAME}.${VERSION}
+    - mv ${PACKAGENAME}.${VERSION} bin/
+
+
+execute:
+  stage: run
+  script:
+    - chmod +x bin/${PACKAGENAME}.${VERSION}
+    - bin/${PACKAGENAME}.${VERSION}
