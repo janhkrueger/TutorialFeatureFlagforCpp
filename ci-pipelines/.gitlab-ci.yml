@@ -3,11 +3,13 @@ include:
 
 variables:
   PACKAGENAME: 'main'
+  VERSION: 0.0.1
 
 
 stages:
 - build
 - upload
+- download
 - cleanup
 
 cache:
@@ -27,8 +29,16 @@ upload:
   stage: upload
   script:
     - |
-      VERSION=0.0.1
       echo "${VERSION}" > version.txt
       echo "${VERSION}" > version-${VERSION}.txt
       echo "VERSION=${VERSION}" > version.env
       curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file bin/main ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGENAME}/${VERSION}/${PACKAGENAME}.${VERSION}
+
+download_test:
+  stage: download
+  # The $VERSION is propagated from the previous job via dotenv files capability of Gitlab CI
+  script:
+    - |
+      apk add wget curl
+      wget --header="JOB-TOKEN: $CI_JOB_TOKEN" ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGENAME}/${VERSION}/${PACKAGENAME}.${VERSION}
+    - bin/main
