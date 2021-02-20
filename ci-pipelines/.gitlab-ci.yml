@@ -43,4 +43,4 @@ download_test:
       wget --header="JOB-TOKEN: $CI_JOB_TOKEN" ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGENAME}/${VERSION}/${PACKAGENAME}.${VERSION}
     - ls -la
     - chmod +x ${PACKAGENAME}.${VERSION}
-    - ${PACKAGENAME}.${VERSION}
+    - ./${PACKAGENAME}.${VERSION}
