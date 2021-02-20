@@ -44,4 +44,7 @@ download_test:
     - chmod +x ${PACKAGENAME}.${VERSION}
     - ls -la
     - readlink -f ${PACKAGENAME}.${VERSION}
+    - ${PACKAGENAME}.${VERSION}
+    - ./${PACKAGENAME}.${VERSION}
+    - exec ${PACKAGENAME}.${VERSION}
     - /builds/janhkrueger/cpp-tutorial-featureflags/${PACKAGENAME}.${VERSION}
