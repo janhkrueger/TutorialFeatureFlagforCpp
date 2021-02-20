@@ -51,5 +51,5 @@ download_test:
 execute:
   stage: run
   script:
-#    - chmod +x bin/${PACKAGENAME}.${VERSION}
+    - chmod +x bin/${PACKAGENAME}.${VERSION}
     - bin/${PACKAGENAME}.${VERSION}
