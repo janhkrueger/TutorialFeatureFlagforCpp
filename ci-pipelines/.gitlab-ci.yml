@@ -35,6 +35,7 @@ upload:
       curl --header "JOB-TOKEN: $CI_JOB_TOKEN" --upload-file bin/main ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGENAME}/${VERSION}/${PACKAGENAME}.${VERSION}
 
 download_test:
+  image: bash:latest
   stage: download
   # The $VERSION is propagated from the previous job via dotenv files capability of Gitlab CI
   script:
