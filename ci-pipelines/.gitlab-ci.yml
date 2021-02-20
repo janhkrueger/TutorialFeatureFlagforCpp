@@ -20,6 +20,7 @@ cache:
 
 batch:
   stage: build
+  when: manual
   script:
     - mkdir -p bin
     - make -f makeGeneric
@@ -27,6 +28,7 @@ batch:
 upload:
   image: curlimages/curl:latest
   stage: upload
+  when: manual
   script:
     - |
       echo "${VERSION}" > version.txt
