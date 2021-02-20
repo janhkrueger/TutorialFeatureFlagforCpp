@@ -22,7 +22,6 @@ batch:
   script:
     - mkdir -p bin
     - make -f makeGeneric
-    - bin/main
 
 upload:
   image: curlimages/curl:latest
@@ -42,4 +41,4 @@ download_test:
     - |
       apk add wget curl
       wget --header="JOB-TOKEN: $CI_JOB_TOKEN" ${CI_API_V4_URL}/projects/${CI_PROJECT_ID}/packages/generic/${PACKAGENAME}/${VERSION}/${PACKAGENAME}.${VERSION}
-    - bin/main
+    - main
